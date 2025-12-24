@@ -7,6 +7,7 @@
     "build": "tsc"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.25.0",
