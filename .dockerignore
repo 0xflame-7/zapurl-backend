@@ -1,0 +1,8 @@
+# Ignore dependencies and build artifacts globally
+**/node_modules
+**/dist
+**/.pnpm-store
+
+# Ignore env files and git
+.env
+.git
