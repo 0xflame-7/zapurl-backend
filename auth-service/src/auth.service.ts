@@ -9,7 +9,6 @@ import {
 } from '@zapurl/shared';
 import { User } from './user.model';
 import { compareHashValue, hashValue } from './hash.util';
-import { IUser } from './auth.types';
 import { Session } from './session.model';
 import { Types } from 'mongoose';
 import jwt from 'jsonwebtoken';
@@ -56,7 +55,7 @@ export class AuthService {
 
     const hashedPassword = await hashValue(password);
 
-    const user: IUser = await User.create({
+    const user = await User.create({
       name,
       email,
       password: hashedPassword,

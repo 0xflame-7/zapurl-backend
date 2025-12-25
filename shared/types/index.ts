@@ -6,6 +6,31 @@ export interface User {
   picturePic: string;
 }
 
+/**
+ * User interface
+ *
+ * @interface IUser
+ * @extends {Document}
+ * @property {string} name - User name
+ * @property {string} email - User email
+ * @property {string} password - User password
+ * @property {string} profilePic - User profile picture
+ * @property {'user' | 'admin'} role - User role
+ * @property {boolean} isEmailVerified - User email verification status
+ * @property {Date} createdAt - User creation date
+ * @property {Date} updatedAt - User update date
+ */
+export interface IUser extends Document {
+  name: string;
+  email: string;
+  password?: string;
+  profilePic?: string;
+  role: 'user' | 'admin';
+  isEmailVerified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;

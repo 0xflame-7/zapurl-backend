@@ -1,7 +1,6 @@
 import http from 'http';
 import app from './app';
-import { print } from '@zapurl/shared';
-import { connectDB, disconnectDB } from './mongoose.lib';
+import { connectDB, disconnectDB, print } from '@zapurl/shared';
 
 const PORT = process.env.PORT || 4000;
 const SERVICE_NAME = 'Auth Service';

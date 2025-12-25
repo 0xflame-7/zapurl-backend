@@ -1,5 +1,5 @@
-import { model, Schema } from 'mongoose';
 import { ISession } from './auth.types';
+import { Schema, model } from '@zapurl/shared';
 
 const sessionSchema = new Schema<ISession>(
   {

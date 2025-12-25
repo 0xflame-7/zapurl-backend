@@ -15,12 +15,12 @@ COPY auth-service ./auth-service
 
 # build shared
 WORKDIR /app/shared
-RUN pnpm install --frozen-lockfile
+RUN pnpm install 
 RUN pnpm run build
 
 # build auth-service
 WORKDIR /app/auth-service
-RUN pnpm install --frozen-lockfile
+RUN pnpm install 
 RUN pnpm run build
 
 EXPOSE 4000

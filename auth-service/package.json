@@ -4,9 +4,10 @@
   "description": "Auth service for ZapURL",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
-    "dev": "tsx --tsconfig tsconfig.dev.json src/server.ts"
+    "dev": "tsx --tsconfig tsconfig.dev.json src/server.ts",
+    "test": "jest"
   },
   "dependencies": {
     "@zapurl/shared": "file:../shared",
@@ -18,7 +19,6 @@
     "google-auth-library": "^10.5.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.0.2",
     "tsx": "^4.21.0",
     "zod": "^4.2.1"
   },

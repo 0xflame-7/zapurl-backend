@@ -1,5 +1,5 @@
-import { createServiceError } from '@zapurl/shared';
 import mongoose, { connect, ConnectOptions, disconnect } from 'mongoose';
+import { createServiceError } from '../utils';
 
 const options: ConnectOptions = {
   sanitizeFilter: true,
@@ -32,7 +32,7 @@ export const connectDB = async (url: string, serviceName: string) => {
     });
   } catch (error) {
     console.log(`Database connection error for ${serviceName}:`, error);
-    throw createServiceError(error.message, 500);
+    throw createServiceError(error as string, 500);
   }
 };
 
@@ -42,6 +42,6 @@ export const disconnectDB = async (serviceName: string) => {
     console.log(`Database connection closed for ${serviceName}`);
   } catch (error) {
     console.log(`Database connection error for ${serviceName}:`, error);
-    throw createServiceError(error.message, 500);
+    throw createServiceError(error as string, 500);
   }
 };
