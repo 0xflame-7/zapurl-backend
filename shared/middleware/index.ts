@@ -1,11 +1,13 @@
 import type { Request, Response, NextFunction } from 'express';
-import { logError, ServiceError } from '../types';
+import { JWTPayload, logError, ServiceError } from '../types';
 import { createErrorResponse } from '../utils';
+import jwt from 'jsonwebtoken';
 
 declare global {
   namespace Express {
     interface Request {
-      user?: any;
+      userId?: string;
+      sessionId?: string;
     }
   }
 }
@@ -20,16 +22,16 @@ export function asyncHandler(
 
 export function validateRequest(scheme: any) {
   return (req: Request, res: Response, next: NextFunction) => {
-    const { error } = scheme.validate(req.body);
+    const result = scheme.safeParse(req.body);
 
-    if (error) {
+    if (!result.success) {
       const errors: Record<string, string[]> = {};
-      error.details.forEach((detail: any) => {
-        const field = detail.path.join('.');
+      result.error.issues.forEach((issue: any) => {
+        const field = issue.path.join('.');
         if (!errors[field]) {
           errors[field] = [];
         }
-        errors[field].push(detail.message);
+        errors[field].push(issue.message);
       });
 
       return res.status(400).json({
@@ -71,4 +73,37 @@ export function corsOptions() {
     methods: ['GET', 'PUT', 'OPTIONS', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   };
+}
+
+export function authenticateSession(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return next(new ServiceError('No Authorization header', 401));
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  if (!token) {
+    return next(new ServiceError('Access token required', 401));
+  }
+
+  const jwtSecret = process.env.JWT_ACCESS_SECRET;
+
+  if (!jwtSecret) {
+    return next(new ServiceError('JWT secret not found', 500));
+  }
+
+  try {
+    const decoded = jwt.verify(token, jwtSecret) as JWTPayload;
+    req.userId = decoded.userId;
+    req.sessionId = decoded.sessionId;
+
+    next();
+  } catch (error) {
+    return next(new ServiceError('Invalid access token', 401));
+  }
 }

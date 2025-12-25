@@ -39,3 +39,19 @@ services:
           path: ./package.json
         - action: rebuild
           path: ./pnpm-lock.yaml
+
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    restart: unless-stopped
+    command: mongod --quiet --logpath /dev/null
+
+volumes:
+  mongo_data:

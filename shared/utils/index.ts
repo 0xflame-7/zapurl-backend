@@ -56,3 +56,9 @@ export function parseEnvInt(
   const parsedValue = parseInt(value, 10);
   return isNaN(parsedValue) ? defaultValue : parsedValue;
 }
+
+/**
+ * Constants
+ */
+export const _1H_IN_MILLISECONDS = 60 * 60 * 1000;
+export const _7D_IN_MILLISECONDS = _1H_IN_MILLISECONDS * 24 * 7;
