@@ -45,6 +45,52 @@ services:
     depends_on:
       - mongo
 
+  user-service:
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    ports:
+      - '4001:4001'
+    env_file:
+      - user-service/.env
+    command: pnpm run dev
+    develop:
+      watch:
+        # Rule 1: Sync Source Code
+        - action: sync+restart
+          path: ./user-service/src
+          target: /app/user-service/src
+          ignore:
+            - node_modules
+            - dist
+            - .pnpm-store
+
+          # Rule 2: Sync Shared Library
+          # If the shared library changes, sync it and restart auth-service
+          # so it picks up the new shared code.
+        - action: sync+restart
+          path: ./shared
+          target: /app/shared
+          ignore:
+            - node_modules
+            - dist
+            - .pnpm-store
+
+          # Rule 3: Rebuild on Dependency Changes
+          # If package.json changes, the container images needs to be
+          # rebuilt to install new changes
+        - action: rebuild
+          path: ./user-service/package.json
+        - action: rebuild
+          path: ./package.json
+        - action: rebuild
+          path: ./pnpm-lock.yaml
+
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/
+    depends_on:
+      - mongo
+
   mongo:
     image: mongo:latest
     container_name: mongo

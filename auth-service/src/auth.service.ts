@@ -10,7 +10,7 @@ import {
 import { User } from './user.model';
 import { compareHashValue, hashValue } from './hash.util';
 import { Session } from './session.model';
-import { Types } from 'mongoose';
+import { Types } from '@zapurl/shared';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
 

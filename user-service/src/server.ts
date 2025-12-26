@@ -1,8 +1,8 @@
 import app from './app';
 import { parseEnvInt, print, startService } from '@zapurl/shared';
 
-const PORT = parseEnvInt(process.env.PORT, 4000);
-const SERVICE_NAME = 'Auth Service';
+const PORT = parseEnvInt(process.env.PORT, 4001);
+const SERVICE_NAME = 'User Service';
 const MONGO_URL = process.env.MONGO_URL || '';
 
 startService({
